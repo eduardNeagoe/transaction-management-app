@@ -12,11 +12,15 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/transaction")
 public class TransactionController {
 
+    private final TransactionService transactionService;
+
     @Autowired
-    private TransactionService transactionService;
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,13 +38,13 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.getAllByAccount(accountNumber), HttpStatus.OK);
     }
 
-    @GetMapping("/hours/{hours}")
+    @GetMapping("all/last/hours/{hours}")
     public ResponseEntity<List<Transaction>> getByHours(@PathVariable(name = "hours") int hours,
                                                         @RequestHeader(name = "accountNumber") String accountNumber) {
         return new ResponseEntity<>(transactionService.getByHours(hours, accountNumber), HttpStatus.OK);
     }
 
-    @GetMapping("/days/{days}")
+    @GetMapping("all/last/days/{days}")
     public ResponseEntity<List<Transaction>> getByDays(@PathVariable(name = "days") int days,
                                                        @RequestHeader(name = "accountNumber") String accountNumber) {
         return new ResponseEntity<>(transactionService.getByDays(days, accountNumber), HttpStatus.OK);

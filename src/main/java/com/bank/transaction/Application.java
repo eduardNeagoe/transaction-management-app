@@ -9,8 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
+    private final DataImportService dataImportService;
+
     @Autowired
-    private DataImportService dataImportService;
+    public Application(DataImportService dataImportService) {
+        this.dataImportService = dataImportService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

@@ -14,8 +14,12 @@ import javax.validation.Valid;
 @RequestMapping("/account")
 public class AccountController {
 
+    private final AccountService accountService;
+
     @Autowired
-    AccountService accountService;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @PostMapping("/create")
     @ResponseBody

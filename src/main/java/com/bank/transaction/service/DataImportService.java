@@ -11,11 +11,15 @@ import java.util.List;
 @Service
 public class DataImportService {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
+
+    private final TransactionService transactionService;
 
     @Autowired
-    private TransactionService transactionService;
+    public DataImportService(AccountService accountService, TransactionService transactionService) {
+        this.accountService = accountService;
+        this.transactionService = transactionService;
+    }
 
     public void createTransactions() {
         Account firstAccount = accountService.findByOwnerName("name 1");

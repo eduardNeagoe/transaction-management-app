@@ -17,11 +17,15 @@ import java.util.List;
 @Service
 public class TransactionService {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
+
+    private final AccountRepository accountRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
+        this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
+    }
 
     public void saveTransaction(TransactionDTO transactionDTO) {
         Transaction transaction = buildTransaction(transactionDTO);

@@ -52,7 +52,7 @@ class TransactionsAppApplicationTests {
     @Test
     public void addTransactionTest() throws Exception {
         HttpEntity<TransactionDTO> requestTransactions = new HttpEntity<>(buildTransactionRequestBody());
-        ResponseEntity<TransactionDTO> response = testRestTemplate.postForEntity(getUri("/transactions/add"), requestTransactions, TransactionDTO.class);
+        ResponseEntity<TransactionDTO> response = testRestTemplate.postForEntity(getUri("/transaction/add"), requestTransactions, TransactionDTO.class);
 
         Account account = accountRepository.findByAccountNumber(buildTransactionRequestBody().getAccountNumber()).get();
 
@@ -79,7 +79,7 @@ class TransactionsAppApplicationTests {
         Account account = accountRepository.findByAccountNumber(buildTransactionRequestBody().getAccountNumber()).get();
         Transaction transaction = transactionRepository.findByAccount(account).get(0);
 
-        ResponseEntity<List<Transaction>> responseBeforeUpdate = testRestTemplate.exchange(getUri("/transactions/hours/3"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
+        ResponseEntity<List<Transaction>> responseBeforeUpdate = testRestTemplate.exchange(getUri("/transaction/all/last/hours/3"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
         });
         assertEquals(responseBeforeUpdate.getBody().size(), 5);
         assertTrue(responseBeforeUpdate.getBody().stream().anyMatch(t -> t.getId() == transaction.getId()));
@@ -87,7 +87,7 @@ class TransactionsAppApplicationTests {
         transaction.setTransactionDate(Instant.now().minus(Duration.ofHours(4)));
         transactionRepository.save(transaction);
 
-        ResponseEntity<List<Transaction>> responseAfterUpdate = testRestTemplate.exchange(getUri("/transactions/hours/3"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
+        ResponseEntity<List<Transaction>> responseAfterUpdate = testRestTemplate.exchange(getUri("/transaction/all/last/hours/3"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
         });
 
         assertFalse(responseAfterUpdate.getBody().stream().anyMatch(t -> t.getId() == transaction.getId()));
@@ -104,7 +104,7 @@ class TransactionsAppApplicationTests {
         Account account = accountRepository.findByAccountNumber(buildTransactionRequestBody().getAccountNumber()).get();
         Transaction transaction = transactionRepository.findByAccount(account).get(0);
 
-        ResponseEntity<List<Transaction>> responseBeforeUpdate = testRestTemplate.exchange(getUri("/transactions/days/2"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
+        ResponseEntity<List<Transaction>> responseBeforeUpdate = testRestTemplate.exchange(getUri("/transaction/all/last/days/2"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
         });
         assertEquals(responseBeforeUpdate.getBody().size(), 5);
         assertTrue(responseBeforeUpdate.getBody().stream().anyMatch(t -> t.getId() == transaction.getId()));
@@ -112,7 +112,7 @@ class TransactionsAppApplicationTests {
         transaction.setTransactionDate(Instant.now().minus(Duration.ofDays(3)));
         transactionRepository.save(transaction);
 
-        ResponseEntity<List<Transaction>> responseAfterUpdate = testRestTemplate.exchange(getUri("/transactions/days/2"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
+        ResponseEntity<List<Transaction>> responseAfterUpdate = testRestTemplate.exchange(getUri("/transaction/all/last/days/2"), HttpMethod.GET, requestTransactions, new ParameterizedTypeReference<>() {
         });
 
         assertFalse(responseAfterUpdate.getBody().stream().anyMatch(t -> t.getId() == transaction.getId()));

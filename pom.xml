@@ -13,8 +13,7 @@
     <artifactId>transaction-management-application</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>transactions-app</name>
-    <description>Transaction management app</description>
+    <name>Transaction Management Application</name>
 
     <properties>
         <java.version>11</java.version>
